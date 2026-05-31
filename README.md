@@ -27,12 +27,13 @@ O sistema opera em modelo **Local-First** — dados registrados offline, sincron
 
 ## Stack
 
-- **Mobile:** React Native + Expo
+- **Mobile:** React Native 0.81 + Expo SDK 54 + Expo Router v6
 - **Banco local:** SQLite + Drizzle ORM
 - **Backend:** Node.js + Express
 - **Banco servidor:** PostgreSQL
 - **Geração de PDF:** PDFKit (server-side)
 - **Testes:** Vitest + fast-check (Property-Based Testing)
+- **Runtime:** Node.js 20+ (recomendado 24+)
 
 ---
 

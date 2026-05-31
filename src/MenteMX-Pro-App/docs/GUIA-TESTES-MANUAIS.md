@@ -5,7 +5,7 @@
 | Componente | Status | Como testar |
 |------------|--------|-------------|
 | Backend API | ✅ Funcional (9 módulos) | Postman, Insomnia ou curl |
-| Mobile App | ✅ Login + Cadastro + Home | Expo Go no celular |
+| Mobile App | ✅ Expo SDK 54 + Login + Cadastro + Home + Sessão | Expo Go no celular |
 | Desktop App | ❌ Placeholder | Ainda não implementado |
 
 ---
@@ -14,7 +14,7 @@
 
 ### Pré-requisitos
 
-- Node.js 18+ instalado
+- Node.js 20+ instalado
 - PostgreSQL rodando (local ou Docker)
 
 ### Passo 1: Instalar dependências
@@ -133,8 +133,8 @@ curl -X POST http://localhost:3000/sync/batch ^
 
 ### Pré-requisitos
 
-- Node.js 18+
-- Expo Go instalado no celular (Google Play ou App Store)
+- Node.js 20+ (recomendado 24+)
+- Expo Go instalado no celular (Google Play ou App Store) — **versão compatível com SDK 54**
 - Celular e computador na mesma rede Wi-Fi
 
 ### Passo 1: Instalar dependências (se ainda não fez)
@@ -155,6 +155,11 @@ export const API_BASE_URL = __DEV__
   : 'https://api.mentemxpro.com';
 ```
 
+Ou use o script automático que detecta o IP:
+```powershell
+.\start-mobile.ps1
+```
+
 ### Passo 3: Iniciar o backend (em um terminal)
 
 ```bash
@@ -172,7 +177,7 @@ npx expo start
 ### Passo 5: Abrir no celular
 
 - Escaneie o QR Code com o app **Expo Go**
-- A tela de **Login** deve aparecer (fundo escuro, botões grandes)
+- A tela de **Ativação/Login** deve aparecer (fundo escuro, botões grandes)
 
 ### Passo 6: Testar o fluxo
 
@@ -239,10 +244,14 @@ PILOT_ID = (preencher após register)
 
 | Problema | Solução |
 |----------|---------|
-| `Cannot find module` | Rode `npm install --legacy-peer-deps` na raiz |
+| `Cannot find module` | Rode `npm install --legacy-peer-deps` na raiz do monorepo |
+| `Cannot find module 'ajv/dist/compile/codegen'` | Rode `npm install ajv@8 --legacy-peer-deps` |
+| `Unable to resolve "./format.js"` | Remova extensões `.js` dos imports em `packages/core/src` |
 | `Connection refused :5432` | PostgreSQL não está rodando |
 | `relation does not exist` | Rode as migrations (tabelas não criadas) |
 | Expo não conecta | Verifique se celular e PC estão na mesma rede |
+| Expo Go pede SDK diferente | Atualize o Expo Go ou ajuste a versão do SDK no `app.json` |
+| Erro 500 no bundler | Verifique os logs do Metro no terminal para ver o módulo faltante |
 
 ---
 
