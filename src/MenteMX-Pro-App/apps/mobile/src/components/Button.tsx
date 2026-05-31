@@ -48,17 +48,17 @@ const styles = StyleSheet.create({
   secondary: {
     backgroundColor: 'transparent',
     borderWidth: 2,
-    borderColor: colors.primary,
+    borderColor: colors.secondary,
   },
   disabled: {
     opacity: 0.5,
   },
   text: {
-    color: colors.text,
+    color: colors.background,
     fontSize: buttons.fontSize,
     fontWeight: '700',
   },
   secondaryText: {
-    color: colors.primary,
+    color: colors.secondary,
   },
 });

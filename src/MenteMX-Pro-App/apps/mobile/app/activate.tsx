@@ -1,20 +1,27 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Button } from '../src/components/Button';
 import { Input } from '../src/components/Input';
 import { colors, spacing, fonts } from '../src/constants/theme';
 import { API_BASE_URL } from '../src/constants/api';
+import { storeKey } from '../src/services/storageService';
 
 /**
- * Formata a key automaticamente com hífens: MXPRO-XXXX-XXXX-XXXX
+ * Keys de desenvolvimento válidas (aceitas offline)
+ */
+const DEV_KEYS = [
+  'MXPR-ADMN-2024-TEST',
+  'MXPR-DEV0-0000-0001',
+];
+
+/**
+ * Formata a key automaticamente com hífens: MXPR-XXXX-XXXX-XXXX
  */
 function formatKeyInput(text: string): string {
-  // Remove tudo que não é alfanumérico
   const clean = text.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
 
-  // Adiciona o prefixo MXPRO se não tiver
   let formatted = clean;
   if (formatted.length > 4) {
     formatted = formatted.slice(0, 4) + '-' + formatted.slice(4);
@@ -26,7 +33,6 @@ function formatKeyInput(text: string): string {
     formatted = formatted.slice(0, 14) + '-' + formatted.slice(14);
   }
 
-  // Limitar ao tamanho máximo: MXPRO-XXXX-XXXX-XXXX (19 chars)
   return formatted.slice(0, 19);
 }
 
@@ -41,11 +47,8 @@ export default function ActivateScreen() {
   };
 
   const validateFormat = (): boolean => {
-    const regex = /^MXPR-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
-    // Aceitar também MXPRO-XXXX-XXXX-XXXX
-    const regex2 = /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
     if (key.length < 19) {
-      setError('Key incompleta. Formato: MXPRO-XXXX-XXXX-XXXX');
+      setError('Key incompleta. Formato: MXPR-XXXX-XXXX-XXXX');
       return false;
     }
     return true;
@@ -57,6 +60,19 @@ export default function ActivateScreen() {
     setLoading(true);
     setError('');
 
+    // Verificar se é uma key de dev (funciona offline)
+    if (DEV_KEYS.includes(key)) {
+      await storeKey('license_key', key);
+      Alert.alert(
+        '✅ Ativado!',
+        'MenteMX Pro ativado com sucesso. Faça login para continuar.',
+        [{ text: 'OK', onPress: () => router.replace('/login') }]
+      );
+      setLoading(false);
+      return;
+    }
+
+    // Tentar ativar via API
     try {
       const response = await fetch(`${API_BASE_URL}/api/keys/activate`, {
         method: 'POST',
@@ -73,17 +89,17 @@ export default function ActivateScreen() {
         throw new Error(data.error || 'Key inválida');
       }
 
-      // Sucesso — redirecionar para login
+      // Salvar key localmente
+      await storeKey('license_key', key);
+
       Alert.alert(
         '✅ Ativado!',
         'MenteMX Pro ativado com sucesso. Faça login para continuar.',
         [{ text: 'OK', onPress: () => router.replace('/login') }]
       );
     } catch (err: any) {
-      // Se offline, salvar localmente e ativar depois
       if (err.message === 'Network request failed') {
-        setError('Sem internet. A ativação será feita quando conectar.');
-        // TODO: salvar key localmente para ativar depois
+        setError('Sem internet. Use uma key de desenvolvimento para testar offline.');
       } else {
         setError(err.message || 'Erro ao ativar key');
       }
@@ -100,8 +116,11 @@ export default function ActivateScreen() {
       <StatusBar style="light" />
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
-          <Text style={styles.logo}>🏁</Text>
-          <Text style={styles.title}>MenteMX Pro</Text>
+          <Image
+            source={require('../assets/logo-mentemx-oficial.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>Ative sua licença</Text>
         </View>
 
@@ -114,13 +133,13 @@ export default function ActivateScreen() {
             label="License Key"
             value={key}
             onChangeText={handleKeyChange}
-            placeholder="MXPRO-XXXX-XXXX-XXXX"
+            placeholder="MXPR-XXXX-XXXX-XXXX"
             autoCapitalize="none"
             error={error}
           />
 
           <Text style={styles.hint}>
-            Formato: MXPRO-XXXX-XXXX-XXXX
+            Formato: MXPR-XXXX-XXXX-XXXX
           </Text>
         </View>
 
@@ -147,13 +166,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xxl,
   },
   logo: {
-    fontSize: 64,
-    marginBottom: spacing.sm,
-  },
-  title: {
-    fontSize: fonts.title,
-    fontWeight: 'bold',
-    color: colors.text,
+    width: 200,
+    height: 100,
+    marginBottom: spacing.md,
   },
   subtitle: {
     fontSize: fonts.body,

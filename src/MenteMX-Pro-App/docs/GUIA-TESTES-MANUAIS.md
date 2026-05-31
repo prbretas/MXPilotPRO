@@ -255,6 +255,29 @@ PILOT_ID = (preencher após register)
 
 ---
 
+## 5. License Keys de Desenvolvimento
+
+Para testar o app sem backend, use uma das keys abaixo na tela de ativação:
+
+| Key | Tipo | Uso |
+|-----|------|-----|
+| `MXPR-ADMN-2024-TEST` | Admin/Dev | Key principal para testes |
+| `MXPR-DEV0-0000-0001` | Dev | Key alternativa |
+
+Essas keys funcionam **offline** (não precisam do backend rodando).
+
+### Fluxo de ativação
+
+1. Ao abrir o app pela primeira vez → Tela de **Ativação** aparece
+2. Digite a key: `MXPR-ADMN-2024-TEST`
+3. Toque em **Ativar**
+4. App redireciona para tela de **Login**
+5. Nas próximas vezes, o app vai direto para Login (key salva localmente)
+
+> **Nota:** O storage atual é em memória — ao fechar completamente o app, a key é perdida e a tela de ativação aparece novamente. Isso será corrigido com persistência real (AsyncStorage/SQLite) em uma próxima iteração.
+
+---
+
 ## Próximos Passos (o que falta para app completo)
 
 - [x] ~~Issue #8: Telas de login/cadastro no mobile~~ ✅
