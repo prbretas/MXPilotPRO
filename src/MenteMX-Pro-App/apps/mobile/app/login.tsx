@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Button } from '../src/components/Button';
@@ -44,8 +44,11 @@ export default function LoginScreen() {
       <StatusBar style="light" />
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
-          <Text style={styles.logo}>🏁</Text>
-          <Text style={styles.title}>MenteMX Pro</Text>
+          <Image
+            source={require('../assets/logo-mentemx-oficial.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>Dados criam campeões.</Text>
         </View>
 
@@ -96,8 +99,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xxl,
   },
   logo: {
-    fontSize: 64,
-    marginBottom: spacing.sm,
+    width: 200,
+    height: 100,
+    marginBottom: spacing.md,
   },
   title: {
     fontSize: fonts.title,

@@ -5,14 +5,17 @@
 #   .\start-mobile.ps1
 #
 # Pré-requisitos:
-#   1. Node.js 18+ instalado
-#   2. Expo Go instalado no celular (Google Play)
+#   1. Node.js 20+ instalado
+#   2. Expo Go instalado no celular (compatível com SDK 54)
 #   3. Celular e PC na mesma rede Wi-Fi
+#
+# Key de teste para ativação:
+#   MXPR-ADMN-2024-TEST
 # ============================================
 
 Write-Host ""
-Write-Host "🏁 MenteMX Pro - Iniciando App Mobile" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "🏁 MenteMX Pro - Iniciando App Mobile (SDK 54)" -ForegroundColor Cyan
+Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Detectar IP local automaticamente
@@ -50,16 +53,17 @@ if (-not (Test-Path "$PSScriptRoot\node_modules")) {
 }
 
 # Iniciar Expo
-Write-Host "📱 Iniciando Expo..." -ForegroundColor Cyan
+Write-Host "📱 Iniciando Expo (SDK 54)..." -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Instruções:" -ForegroundColor Yellow
 Write-Host "  1. Abra o app Expo Go no celular" -ForegroundColor White
 Write-Host "  2. Escaneie o QR Code que vai aparecer abaixo" -ForegroundColor White
-Write-Host "  3. Aguarde o app carregar" -ForegroundColor White
+Write-Host "  3. Na primeira vez, use a key: MXPR-ADMN-2024-TEST" -ForegroundColor Green
+Write-Host "  4. Depois faça login ou crie uma conta" -ForegroundColor White
 Write-Host ""
 Write-Host "Para parar: Ctrl+C" -ForegroundColor Gray
-Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
 
 Set-Location "$PSScriptRoot\apps\mobile"
-npx expo start --tunnel
+npx expo start

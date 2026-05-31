@@ -1,22 +1,40 @@
 /**
  * Tema MenteMX Pro — Modo Luva
  * Alto contraste, botões grandes, fundo escuro
+ * Paleta baseada no site www.mentemx.com.br
  */
 
 export const colors = {
-  background: '#1a1a2e',
-  surface: '#16213e',
-  primary: '#e94560',
-  primaryDark: '#c23152',
-  secondary: '#0f3460',
-  text: '#ffffff',
-  textSecondary: '#a0a0b0',
-  textMuted: '#6c6c7c',
-  success: '#4caf50',
-  error: '#f44336',
-  warning: '#ff9800',
-  border: '#2a2a4e',
-  inputBg: '#0f1a30',
+  // Cores principais (do site MenteMX)
+  green: '#2ecc40',
+  orange: '#ff6b00',
+  yellow: '#f5c000',
+
+  // Fundos
+  background: '#0a0a0a',
+  surface: '#1a1a1a',
+  dark: '#111111',
+
+  // Primária e secundária
+  primary: '#2ecc40',       // Verde MenteMX
+  primaryDark: '#27ae36',
+  secondary: '#ff6b00',     // Laranja MenteMX
+  secondaryDark: '#e05e00',
+  accent: '#f5c000',        // Amarelo MenteMX
+
+  // Texto
+  text: '#f5f5f5',
+  textSecondary: '#b0b0b0',
+  textMuted: '#6c6c6c',
+
+  // Status
+  success: '#2ecc40',
+  error: '#ff4444',
+  warning: '#f5c000',
+
+  // UI
+  border: '#2a2a2a',
+  inputBg: '#111111',
 };
 
 export const spacing = {
