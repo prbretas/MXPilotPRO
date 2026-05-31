@@ -6,6 +6,7 @@ import authRoutes from './auth/auth.routes.js';
 import bikesRoutes from './bikes/bikes.routes.js';
 import sessionsRoutes from './sessions/sessions.routes.js';
 import syncRoutes from './sync/sync.routes.js';
+import syncPullRoutes from './sync/sync.pull.routes.js';
 import eventsRoutes from './events/events.routes.js';
 import setupsRoutes from './setups/setups.routes.js';
 import licensingRoutes from './licensing/licensing.routes.js';
@@ -27,6 +28,7 @@ app.use('/', authRoutes); // /pilots/:id routes
 app.use('/', bikesRoutes); // /pilots/:id/bikes routes
 app.use('/', sessionsRoutes); // /pilots/:id/sessions + /sessions/:id/laps routes
 app.use('/sync', syncRoutes); // /sync/batch + /sync/status
+app.use('/sync', syncPullRoutes); // /sync/pull + /sync/push
 app.use('/', eventsRoutes); // /pilots/:id/events
 app.use('/', setupsRoutes); // /pilots/:id/setups
 app.use('/api/keys', licensingRoutes); // /api/keys/generate, activate, validate
