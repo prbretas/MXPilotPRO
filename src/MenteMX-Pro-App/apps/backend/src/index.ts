@@ -10,6 +10,7 @@ import syncPullRoutes from './sync/sync.pull.routes.js';
 import eventsRoutes from './events/events.routes.js';
 import setupsRoutes from './setups/setups.routes.js';
 import licensingRoutes from './licensing/licensing.routes.js';
+import licensingAdminRoutes from './licensing/licensing.admin.routes.js';
 import reportsRoutes from './reports/reports.routes.js';
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/sync', syncPullRoutes); // /sync/pull + /sync/push
 app.use('/', eventsRoutes); // /pilots/:id/events
 app.use('/', setupsRoutes); // /pilots/:id/setups
 app.use('/api/keys', licensingRoutes); // /api/keys/generate, activate, validate
+app.use('/api/admin/keys', licensingAdminRoutes); // /api/admin/keys/dashboard, export
 app.use('/', reportsRoutes); // /pilots/:id/reports
 
 // Health check
