@@ -9,7 +9,7 @@
  * - licensing: Validação de License Keys
  */
 
-export * from './format.js';
-export * from './sync.js';
-export * from './analytics/index.js';
-export * from './streak.js';
+export * from './format';
+export * from './sync';
+export * from './analytics/index';
+export * from './streak';
