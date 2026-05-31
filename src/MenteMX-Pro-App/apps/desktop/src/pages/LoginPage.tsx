@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = 'http://localhost:3000';
+
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [key, setKey] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -16,8 +19,47 @@ export function LoginPage() {
       return;
     }
 
-    // TODO: validar key via API
-    navigate('/dashboard');
+    if (!/^MXPRO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key)) {
+      setError('Formato de key inválido. Use: MXPRO-XXXX-XXXX-XXXX');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Validar key
+      const keyRes = await fetch(`${API_URL}/api/keys/validate?code=${key}`);
+      if (!keyRes.ok) {
+        const data = await keyRes.json();
+        throw new Error(data.error || 'Key inválida');
+      }
+
+      // Ativar como desktop
+      await fetch(`${API_URL}/api/keys/activate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: key, deviceId: 'desktop-' + Date.now(), deviceType: 'desktop' }),
+      });
+
+      // Login com email
+      const loginRes = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: key }), // MVP: key como senha temporária
+      });
+
+      if (loginRes.ok) {
+        const data = await loginRes.json();
+        localStorage.setItem('auth_token', data.token);
+        localStorage.setItem('pilot_id', data.pilot.id);
+        localStorage.setItem('license_key', key);
+      }
+
+      navigate('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Erro ao conectar');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,7 +93,9 @@ export function LoginPage() {
 
           {error && <p style={styles.error}>{error}</p>}
 
-          <button type="submit" style={styles.button}>Entrar</button>
+          <button type="submit" style={styles.button} disabled={loading}>
+            {loading ? 'Conectando...' : 'Entrar'}
+          </button>
         </form>
       </div>
     </div>
