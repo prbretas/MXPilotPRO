@@ -22,8 +22,5 @@
     "npm": ">=9.0.0"
   },
   "author": "MenteMX Team",
-  "license": "MIT",
-  "dependencies": {
-    "expo-linking": "^56.0.13"
-  }
+  "license": "MIT"
 }
