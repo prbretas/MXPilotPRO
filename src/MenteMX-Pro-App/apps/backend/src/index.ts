@@ -46,9 +46,13 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🏁 MenteMX Pro API running on port ${PORT}`);
-});
+// Start server (only when not running on Vercel/serverless)
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`🏁 MenteMX Pro API running on port ${PORT}`);
+  });
+}
 
+// Export for Vercel serverless + traditional server
 export default app;
+module.exports = app;
