@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 12.0.0"
+    "version": ">= 12.0.0",
+    "appVersionSource": "local"
   },
   "build": {
     "base": {
@@ -14,15 +15,13 @@
       "distribution": "internal",
       "developmentClient": false,
       "android": {
-        "buildType": "apk",
-        "image": "latest"
+        "buildType": "apk"
       }
     },
     "production": {
       "extends": "base",
       "android": {
-        "buildType": "app-bundle",
-        "image": "latest"
+        "buildType": "app-bundle"
       }
     }
   }
